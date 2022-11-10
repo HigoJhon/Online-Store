@@ -1,5 +1,6 @@
-const saveItem = (item) => localStorage.setItem('cart', JSON.stringify(item));
+const saveItem = (keyStorage, item) => localStorage
+  .setItem(keyStorage, JSON.stringify(item));
 
-const getItem = () => JSON.parse(localStorage.getItem('cart'));
+const getItem = (keyStorage) => JSON.parse(localStorage.getItem(keyStorage));
 
 export { saveItem, getItem };

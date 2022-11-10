@@ -8,7 +8,7 @@ class ShoppingCart extends Component {
   };
 
   componentDidMount() {
-    const cartItems = getItem();
+    const cartItems = getItem('cart');
     const validCart = cartItems === null;
     this.setState({
       cartItem: cartItems,
