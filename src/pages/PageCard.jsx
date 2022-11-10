@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { saveItem, getItem } from '../components/LocalStorage';
 
 class pageCard extends React.Component {
   state = {
     product: {},
+    cartItems: [],
   };
 
   async componentDidMount() {
@@ -12,8 +14,23 @@ class pageCard extends React.Component {
     const url = `https://api.mercadolibre.com/items/${id}`;
     const data = await fetch(url);
     const dataJson = await data.json();
-    this.setState({ product: dataJson });
+    const saveCartItems = getItem();
+    const validSaveCart = saveCartItems === null ? [] : saveCartItems;
+    this.setState({
+      product: dataJson,
+      cartItems: validSaveCart,
+    });
   }
+
+  onSaveCart = () => {
+    const { product } = this.state;
+    this.setState((prev) => ({
+      cartItems: [...prev.cartItems, product],
+    }), () => {
+      const { cartItems } = this.state;
+      saveItem(cartItems);
+    });
+  };
 
   render() {
     const { product: { title, price, thumbnail } } = this.state;
@@ -22,6 +39,14 @@ class pageCard extends React.Component {
         <h1 data-testid="product-detail-name">{ title }</h1>
         <h1 data-testid="product-detail-price">{ price }</h1>
         <img data-testid="product-detail-image" src={ thumbnail } alt={ title } />
+        <button
+          data-testid="product-detail-add-to-cart"
+          type="button"
+          onClick={ this.onSaveCart }
+          name={ title }
+        >
+          Adicionar ao Carrinho
+        </button>
         <Link to="/ShoppingCart" data-testid="shopping-cart-button">
           Carrinho de compra.
         </Link>
