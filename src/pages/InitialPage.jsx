@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
+import { saveItem, getItem } from '../components/LocalStorage';
 
 class InitialPage extends Component {
   state = {
@@ -9,11 +10,17 @@ class InitialPage extends Component {
     isButtonDisable: true,
     search: [],
     isUndefined: true,
+    cartItems: [],
   };
 
   async componentDidMount() {
     const categoriesData = await getCategories();
-    this.setState({ categories: categoriesData });
+    const saveCartItems = getItem();
+    const validSaveCart = saveCartItems === null ? [] : saveCartItems;
+    this.setState({
+      categories: categoriesData,
+      cartItems: validSaveCart,
+    });
   }
 
   onInputChange = ({ target }) => {
@@ -31,16 +38,28 @@ class InitialPage extends Component {
     event.preventDefault();
     const { inputText } = this.state;
     const { value } = event.target;
-    const validQuery = inputText === '' ? value : inputText;
-    const url = `https://api.mercadolibre.com/sites/MLB/search?q=$${validQuery}`;
-    const dataFetch = await fetch(url);
-    const objJson = await dataFetch.json();
-    const validInput = objJson.results.length === 0;
+    const validQuery = inputText === '' ? '$QUERY' : inputText;
+    const validId = value === '' ? '$CATEGORY_ID' : value;
+    // const url = `https://api.mercadolibre.com/sites/MLB/search?q=$${validQuery}`;
+    const dataFetch = await getProductsFromCategoryAndQuery(validId, validQuery);
+    // const objJson = await dataFetch.json();
+    const validInput = dataFetch.results.length === 0;
     this.setState({
-      search: objJson.results,
+      search: dataFetch.results,
       isUndefined: validInput,
       inputText: '',
       isButtonDisable: true,
+    });
+  };
+
+  onSaveCart = (product) => {
+    // const { search } = this.state;
+    // const filteredItem = search.filter((item) => item.title === event.target.name);
+    this.setState((prev) => ({
+      cartItems: [...prev.cartItems, product],
+    }), () => {
+      const { cartItems } = this.state;
+      saveItem(cartItems);
     });
   };
 
@@ -100,6 +119,14 @@ class InitialPage extends Component {
                   <p>{ eachProduct.title }</p>
                   <p>{ eachProduct.price }</p>
                   <img src={ eachProduct.thumbnail } alt={ eachProduct.title } />
+                  <button
+                    data-testid="product-add-to-cart"
+                    type="button"
+                    onClick={ () => this.onSaveCart(eachProduct) }
+                    name={ eachProduct.title }
+                  >
+                    Adicionar ao Carrinho
+                  </button>
                   <Link
                     to={ `/pageCard/${eachProduct.id}` }
                     data-testid="product-detail-link"
