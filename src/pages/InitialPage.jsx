@@ -100,6 +100,7 @@ class InitialPage extends Component {
                   <p>{ eachProduct.title }</p>
                   <p>{ eachProduct.price }</p>
                   <img src={ eachProduct.thumbnail } alt={ eachProduct.title } />
+                  <Link to="./pageCard" data-testid="product-detail-link">Datails</Link>
                 </li>
               ))}
             </ol>
