@@ -30,7 +30,9 @@ class InitialPage extends Component {
   onButtonClick = async (event) => {
     event.preventDefault();
     const { inputText } = this.state;
-    const url = `https://api.mercadolibre.com/sites/MLB/search?q=$${inputText}`;
+    const { value } = event.target;
+    const validQuery = inputText === '' ? value : inputText;
+    const url = `https://api.mercadolibre.com/sites/MLB/search?q=$${validQuery}`;
     const dataFetch = await fetch(url);
     const objJson = await dataFetch.json();
     const validInput = objJson.results.length === 0;
@@ -58,6 +60,7 @@ class InitialPage extends Component {
                     name={ categorie.id }
                     id={ categorie.id }
                     value={ categorie.id }
+                    onClick={ this.onButtonClick }
                   >
                     a
                   </button>
