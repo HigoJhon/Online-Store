@@ -12,14 +12,15 @@ class ShoppingCart extends Component {
   componentDidMount() {
     const cartItems = getItem('cart');
     const validCart = cartItems === null;
-    const isCart = cartItems.reduce((acc, curr) => {
-      const { id } = curr;
-      return { ...acc, [id]: 1 };
-    }, {});
+    const isCartItems = cartItems === null ? null
+      : cartItems.reduce((acc, curr) => {
+        const { id } = curr;
+        return { ...acc, [id]: 1 };
+      }, {});
     this.setState({
       cartItem: cartItems,
       isCart: validCart,
-      sum: isCart,
+      sum: isCartItems,
     });
   }
 
