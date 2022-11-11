@@ -6,7 +6,7 @@ class ShoppingCart extends Component {
     cartItem: [],
     isCart: true,
     sum: {},
-    isButtonMinDisabled: true,
+    isButtonMinDisabled: {},
   };
 
   componentDidMount() {
@@ -17,10 +17,15 @@ class ShoppingCart extends Component {
         const { id } = curr;
         return { ...acc, [id]: 1 };
       }, {});
+    const isButtonTrue = cartItems.reduce((acc, curr) => {
+      const { id } = curr;
+      return { ...acc, [id]: true };
+    }, {});
     this.setState({
       cartItem: cartItems,
       isCart: validCart,
       sum: isCartItems,
+      isButtonMinDisabled: isButtonTrue,
     });
   }
 
@@ -31,7 +36,7 @@ class ShoppingCart extends Component {
     const increase = validIncrement + +value;
     this.setState((prev) => ({
       sum: { ...prev.sum, [name]: increase },
-      isButtonMinDisabled: false,
+      isButtonMinDisabled: { ...prev.isButtonMinDisabled, [name]: false },
     }));
   };
 
@@ -42,9 +47,10 @@ class ShoppingCart extends Component {
     this.setState((prev) => ({
       sum: { ...prev.sum, [name]: increase },
     }), () => {
-      // const { sum } = this.state;
       const validTotal = sum[name] === 2;
-      this.setState({ isButtonMinDisabled: validTotal });
+      this.setState((prev) => ({
+        isButtonMinDisabled: { ...prev.isButtonMinDisabled, [name]: validTotal },
+      }));
     });
   };
 
@@ -90,7 +96,7 @@ class ShoppingCart extends Component {
                         name={ item.id }
                         value="1"
                         onClick={ this.onButtonMin }
-                        disabled={ isButtonMinDisabled }
+                        disabled={ isButtonMinDisabled[item.id] }
                       >
                         -
                       </button>
