@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { saveItem, getItem } from '../components/LocalStorage';
+import Email from './Email';
 
-class pageCard extends React.Component {
+class PageCard extends React.Component {
   state = {
     product: {},
     cartItems: [],
@@ -50,12 +51,13 @@ class pageCard extends React.Component {
         <Link to="/ShoppingCart" data-testid="shopping-cart-button">
           Carrinho de compra.
         </Link>
+        <Email />
       </div>
     );
   }
 }
 
-pageCard.propTypes = {
+PageCard.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -63,4 +65,4 @@ pageCard.propTypes = {
   }).isRequired,
 };
 
-export default pageCard;
+export default PageCard;
