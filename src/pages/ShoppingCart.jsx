@@ -17,10 +17,11 @@ class ShoppingCart extends Component {
         const { id } = curr;
         return { ...acc, [id]: 1 };
       }, {});
-    const isButtonTrue = cartItems.reduce((acc, curr) => {
-      const { id } = curr;
-      return { ...acc, [id]: true };
-    }, {});
+    const isButtonTrue = cartItems === null ? null
+      : cartItems.reduce((acc, curr) => {
+        const { id } = curr;
+        return { ...acc, [id]: true };
+      }, {});
     this.setState({
       cartItem: cartItems,
       isCart: validCart,
