@@ -16,7 +16,6 @@ class App extends React.Component {
           <Route exact path="/pageCard/:id" component={ PageCard } />
           <Route exact path="/checkout" component={ Checkout } />
         </Switch>
-
       </div>
     );
   }
