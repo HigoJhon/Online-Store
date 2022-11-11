@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { getItem, saveItem } from '../components/LocalStorage';
 
 class ShoppingCart extends Component {
@@ -27,6 +28,9 @@ class ShoppingCart extends Component {
       isCart: validCart,
       sum: isCartItems,
       isButtonMinDisabled: isButtonTrue,
+    }, () => {
+      const { sum } = this.state;
+      saveItem('sum', sum);
     });
   }
 
@@ -38,7 +42,10 @@ class ShoppingCart extends Component {
     this.setState((prev) => ({
       sum: { ...prev.sum, [name]: increase },
       isButtonMinDisabled: { ...prev.isButtonMinDisabled, [name]: false },
-    }));
+    }), () => {
+      const { sum: sumTest } = this.state;
+      saveItem('sum', sumTest);
+    });
   };
 
   onButtonMin = ({ target }) => {
@@ -48,7 +55,9 @@ class ShoppingCart extends Component {
     this.setState((prev) => ({
       sum: { ...prev.sum, [name]: increase },
     }), () => {
-      const validTotal = sum[name] === 2;
+      const { sum: sumTest } = this.state;
+      saveItem('sum', sumTest);
+      const validTotal = sumTest[name] === 1;
       this.setState((prev) => ({
         isButtonMinDisabled: { ...prev.isButtonMinDisabled, [name]: validTotal },
       }));
@@ -113,6 +122,13 @@ class ShoppingCart extends Component {
                     </li>
                   ))
                 }
+                <Link
+                  to="/checkout"
+                  data-testid="checkout-products"
+                  params={ { sumLink: sum } }
+                >
+                  Checkout
+                </Link>
               </ul>
             )
         }
