@@ -15,7 +15,7 @@ class InitialPage extends Component {
 
   async componentDidMount() {
     const categoriesData = await getCategories();
-    const saveCartItems = getItem();
+    const saveCartItems = getItem('cart');
     const validSaveCart = saveCartItems === null ? [] : saveCartItems;
     this.setState({
       categories: categoriesData,
@@ -40,9 +40,7 @@ class InitialPage extends Component {
     const { value } = event.target;
     const validQuery = inputText === '' ? '$QUERY' : inputText;
     const validId = value === '' ? '$CATEGORY_ID' : value;
-    // const url = `https://api.mercadolibre.com/sites/MLB/search?q=$${validQuery}`;
     const dataFetch = await getProductsFromCategoryAndQuery(validId, validQuery);
-    // const objJson = await dataFetch.json();
     const validInput = dataFetch.results.length === 0;
     this.setState({
       search: dataFetch.results,
@@ -53,13 +51,11 @@ class InitialPage extends Component {
   };
 
   onSaveCart = (product) => {
-    // const { search } = this.state;
-    // const filteredItem = search.filter((item) => item.title === event.target.name);
     this.setState((prev) => ({
       cartItems: [...prev.cartItems, product],
     }), () => {
       const { cartItems } = this.state;
-      saveItem(cartItems);
+      saveItem('cart', cartItems);
     });
   };
 

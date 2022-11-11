@@ -14,7 +14,7 @@ class pageCard extends React.Component {
     const url = `https://api.mercadolibre.com/items/${id}`;
     const data = await fetch(url);
     const dataJson = await data.json();
-    const saveCartItems = getItem();
+    const saveCartItems = getItem('cart');
     const validSaveCart = saveCartItems === null ? [] : saveCartItems;
     this.setState({
       product: dataJson,
@@ -28,7 +28,7 @@ class pageCard extends React.Component {
       cartItems: [...prev.cartItems, product],
     }), () => {
       const { cartItems } = this.state;
-      saveItem(cartItems);
+      saveItem('cart', cartItems);
     });
   };
 
