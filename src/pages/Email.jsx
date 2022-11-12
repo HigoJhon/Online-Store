@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
+// import PropTypes from 'prop-types';
 import { saveItem, getItem } from '../components/LocalStorage';
 
 class Email extends Component {
   state = {
     isButtonDisable: true,
     email: '',
-    ratingValue: '',
-    areaText: '',
+    rating: '',
+    text: '',
     avaliations: [],
+    btnCheck: false,
   };
 
   componentDidMount() {
-    const gotItem = getItem('eachAvaliation');
+    const { itemId } = this.props;
+    console.log(itemId);
+    const gotItem = getItem(itemId);
+    console.log(gotItem);
     const isItValid = gotItem === null ? [] : gotItem;
-    console.log(isItValid);
     this.setState(() => ({
       avaliations: isItValid,
+      id: itemId,
     }));
   }
 
@@ -23,44 +28,49 @@ class Email extends Component {
     const { name, value } = target;
     this.setState({
       [name]: value,
+      btnCheck: false,
     }, () => {
       this.inputValidation();
     });
   };
 
   inputValidation = () => {
-    const { email, ratingValue } = this.state;
-
-    if (email.includes('@')
-       && ratingValue) {
-      this.setState({
-        isButtonDisable: false,
-      });
-    }
+    const { email, rating } = this.state;
+    const validation = email.includes('@')
+      && rating !== '';
+    this.setState({ isButtonDisable: !validation });
   };
 
   buttonClick = (event) => {
     event.preventDefault();
-    const { email, areaText, ratingValue } = this.state;
-    this.setState((prev) => ({
-      avaliations: [...prev.avaliations,
-        {
-          email,
-          areaText,
-          ratingValue,
-        },
-      ],
-      email: '',
-      ratingValue: '',
-      areaText: '',
-    }), () => {
-      const { avaliations } = this.state;
-      saveItem('eachAvaliation', avaliations);
-    });
+    const { email, text, rating, isButtonDisable } = this.state;
+    this.setState({ btnCheck: isButtonDisable });
+    if (!isButtonDisable) {
+      this.setState((prev) => ({
+        avaliations: [...prev.avaliations,
+          {
+            email,
+            text,
+            rating,
+          },
+        ],
+        email: '',
+        rating: '',
+        text: '',
+        btnCheck: false,
+        isButtonDisable: true,
+      }), () => {
+        const { avaliations } = this.state;
+        const { itemId } = this.state;
+        saveItem(itemId, avaliations);
+      });
+    }
   };
 
   render() {
-    const { email, areaText, isButtonDisable, avaliations } = this.state;
+    const { email, text, avaliations, btnCheck } = this.state;
+    const { itemId } = this.props;
+    console.log(itemId);
     return (
       <>
         <form onSubmit={ this.buttonClick }>
@@ -68,12 +78,11 @@ class Email extends Component {
             Email
             <input
               data-testid="product-detail-email"
-              type="email"
+              type="text"
               value={ email }
               placeholder="Digite o seu email"
               name="email"
               onChange={ this.handleChange }
-              required
             />
           </label>
           <label data-testid="1-rating" htmlFor="evaluator1">
@@ -83,8 +92,7 @@ class Email extends Component {
               type="radio"
               value="1"
               id="evaluator1"
-              name="ratingValue"
-              required
+              name="rating"
               onChange={ this.handleChange }
             />
           </label>
@@ -95,8 +103,7 @@ class Email extends Component {
               type="radio"
               value="2"
               id="evaluator2"
-              name="ratingValue"
-              required
+              name="rating"
               onChange={ this.handleChange }
             />
           </label>
@@ -107,8 +114,7 @@ class Email extends Component {
               type="radio"
               value="3"
               id="evaluator3"
-              name="ratingValue"
-              required
+              name="rating"
               onChange={ this.handleChange }
             />
           </label>
@@ -119,8 +125,7 @@ class Email extends Component {
               type="radio"
               value="4"
               id="evaluator4"
-              name="ratingValue"
-              required
+              name="rating"
               onChange={ this.handleChange }
             />
           </label>
@@ -131,8 +136,7 @@ class Email extends Component {
               type="radio"
               value="5"
               id="evaluator5"
-              name="ratingValue"
-              required
+              name="rating"
               onChange={ this.handleChange }
             />
           </label>
@@ -140,28 +144,27 @@ class Email extends Component {
           <textarea
             data-testid="product-detail-evaluation"
             placeholder="Digite o seu comentario"
-            value={ areaText }
+            value={ text }
             onChange={ this.handleChange }
-            name="areaText"
+            name="text"
           />
           <br />
           <button
             data-testid="submit-review-btn"
             type="submit"
-            disabled={ isButtonDisable }
           >
             Avaliar
           </button>
         </form>
         {
-          isButtonDisable && <p data-testid="error-msg">Campos inválidos</p>
+          btnCheck && <p data-testid="error-msg">Campos inválidos</p>
         }
         {
           avaliations.map((eachAvaliation) => (
             <div key={ eachAvaliation.email }>
               <p data-testid="review-card-email">{ eachAvaliation.email }</p>
-              <p data-testid="review-card-rating">{ eachAvaliation.ratingValue }</p>
-              <p data-testid="review-card-evaluation">{ eachAvaliation.areaText}</p>
+              <p data-testid="review-card-evaluation">{ eachAvaliation.text }</p>
+              <p data-testid="review-card-rating">{ eachAvaliation.rating }</p>
             </div>
           ))
         }
@@ -169,4 +172,13 @@ class Email extends Component {
     );
   }
 }
+
+// Email.propTypes = {
+//   match: PropTypes.shape({
+//     params: PropTypes.shape({
+//       id: PropTypes.string.isRequired,
+//     }),
+//   }).isRequired,
+// };
+
 export default Email;
