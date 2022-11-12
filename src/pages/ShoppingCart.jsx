@@ -125,7 +125,6 @@ class ShoppingCart extends Component {
                 <Link
                   to="/checkout"
                   data-testid="checkout-products"
-                  params={ { sumLink: sum } }
                 >
                   Checkout
                 </Link>

@@ -34,7 +34,8 @@ class PageCard extends React.Component {
   };
 
   render() {
-    const { product: { title, price, thumbnail } } = this.state;
+    const { product: { title, price, thumbnail, id } } = this.state;
+    console.log(id);
     return (
       <div className="pageCard">
         <h1 data-testid="product-detail-name">{ title }</h1>
@@ -51,7 +52,9 @@ class PageCard extends React.Component {
         <Link to="/ShoppingCart" data-testid="shopping-cart-button">
           Carrinho de compra.
         </Link>
-        <Email />
+        <Email
+          component={ Email }
+        />
       </div>
     );
   }
