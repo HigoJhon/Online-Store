@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { saveItem, getItem } from '../components/LocalStorage';
 
 class Email extends Component {
@@ -13,14 +13,13 @@ class Email extends Component {
   };
 
   componentDidMount() {
-    const { itemId } = this.props;
-    console.log(itemId);
-    const gotItem = getItem(itemId);
-    console.log(gotItem);
+    const { match } = this.props;
+    const { params: { id } } = match;
+    const gotItem = getItem(id);
     const isItValid = gotItem === null ? [] : gotItem;
     this.setState(() => ({
       avaliations: isItValid,
-      id: itemId,
+      id,
     }));
   }
 
@@ -61,16 +60,15 @@ class Email extends Component {
         isButtonDisable: true,
       }), () => {
         const { avaliations } = this.state;
-        const { itemId } = this.state;
-        saveItem(itemId, avaliations);
+        const { id } = this.state;
+        saveItem(id, avaliations);
       });
     }
   };
 
   render() {
     const { email, text, avaliations, btnCheck } = this.state;
-    const { itemId } = this.props;
-    console.log(itemId);
+
     return (
       <>
         <form onSubmit={ this.buttonClick }>
@@ -88,7 +86,6 @@ class Email extends Component {
           <label data-testid="1-rating" htmlFor="evaluator1">
             1
             <input
-              data-testid="review-card-rating"
               type="radio"
               value="1"
               id="evaluator1"
@@ -99,7 +96,6 @@ class Email extends Component {
           <label data-testid="2-rating" htmlFor="evaluator2">
             2
             <input
-              data-testid="review-card-rating"
               type="radio"
               value="2"
               id="evaluator2"
@@ -110,7 +106,6 @@ class Email extends Component {
           <label data-testid="3-rating" htmlFor="evaluator3">
             3
             <input
-              data-testid="review-card-rating"
               type="radio"
               value="3"
               id="evaluator3"
@@ -121,7 +116,6 @@ class Email extends Component {
           <label data-testid="4-rating" htmlFor="evaluator4">
             4
             <input
-              data-testid="review-card-rating"
               type="radio"
               value="4"
               id="evaluator4"
@@ -132,7 +126,6 @@ class Email extends Component {
           <label data-testid="5-rating" htmlFor="evaluator5">
             5
             <input
-              data-testid="review-card-rating"
               type="radio"
               value="5"
               id="evaluator5"
@@ -173,12 +166,12 @@ class Email extends Component {
   }
 }
 
-// Email.propTypes = {
-//   match: PropTypes.shape({
-//     params: PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//     }),
-//   }).isRequired,
-// };
+Email.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+};
 
 export default Email;

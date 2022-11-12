@@ -52,9 +52,7 @@ class PageCard extends React.Component {
         <Link to="/ShoppingCart" data-testid="shopping-cart-button">
           Carrinho de compra.
         </Link>
-        <Email
-          component={ Email }
-        />
+        <Email { ...this.props } />
       </div>
     );
   }
