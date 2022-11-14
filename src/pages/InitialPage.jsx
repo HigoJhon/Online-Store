@@ -118,6 +118,10 @@ class InitialPage extends Component {
                   <p>{ eachProduct.title }</p>
                   <p>{ eachProduct.price }</p>
                   <img src={ eachProduct.thumbnail } alt={ eachProduct.title } />
+                  {
+                    eachProduct.shipping.free_shipping
+                    && <p data-testid="free-shipping">Frete grátis</p>
+                  }
                   <button
                     data-testid="product-add-to-cart"
                     type="button"
@@ -131,7 +135,9 @@ class InitialPage extends Component {
                     data-testid="product-detail-link"
                     params={ { name: eachProduct.title,
                       image: eachProduct.thumbnail,
-                      price: eachProduct.price } }
+                      price: eachProduct.price,
+                      shipping: eachProduct.shipping.free_shipping,
+                    } }
                   >
                     Datails
                   </Link>
