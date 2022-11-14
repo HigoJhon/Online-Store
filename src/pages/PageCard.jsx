@@ -21,7 +21,7 @@ class PageCard extends React.Component {
     this.setState({
       product: dataJson,
       cartItems: validSaveCart,
-      cartLength: saveCartItems.length,
+      cartLength: validSaveCart.length,
     });
   }
 

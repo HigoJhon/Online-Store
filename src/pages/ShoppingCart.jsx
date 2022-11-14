@@ -8,30 +8,46 @@ class ShoppingCart extends Component {
     isCart: true,
     sum: {},
     isButtonMinDisabled: {},
+    isButtonMaxDisabled: {},
   };
 
   componentDidMount() {
     const cartItems = getItem('cart');
-    const validCart = cartItems === null;
-    const isCartItems = cartItems === null ? null
-      : cartItems.reduce((acc, curr) => {
-        const { id } = curr;
-        return { ...acc, [id]: 1 };
-      }, {});
-    const isButtonTrue = cartItems === null ? null
-      : cartItems.reduce((acc, curr) => {
-        const { id } = curr;
-        return { ...acc, [id]: true };
-      }, {});
-    this.setState({
-      cartItem: cartItems,
-      isCart: validCart,
-      sum: isCartItems,
-      isButtonMinDisabled: isButtonTrue,
-    }, () => {
-      const { sum } = this.state;
-      saveItem('sum', sum);
-    });
+    const sumItems = getItem('sum');
+    const validCart = cartItems === null || cartItems.length === 0;
+    if (!validCart) {
+      const validSum = sumItems === null || sumItems.length === 0;
+      const isSumValid = !validSum ? sumItems
+        : cartItems.reduce((acc, curr) => {
+          const { id } = curr;
+          return { ...acc, [id]: 1 };
+        }, {});
+      console.log(isSumValid);
+      const isButtonTrue = validCart ? cartItems
+        : cartItems.reduce((acc, curr) => {
+          const { id, available_quantity: quantity } = curr;
+          const validPlus = quantity === isSumValid[curr.id];
+          return { ...acc, [id]: validPlus };
+        }, {});
+      console.log(isButtonTrue);
+      const isButtonFalse = cartItems === null ? null
+        : cartItems.reduce((acc, curr) => {
+          const { id, available_quantity: quantity } = curr;
+          const validPlus = quantity === 1;
+          return { ...acc, [id]: validPlus };
+        }, {});
+      console.log(isButtonFalse);
+      this.setState({
+        cartItem: cartItems,
+        isCart: validCart,
+        sum: isSumValid,
+        isButtonMinDisabled: isButtonTrue,
+        isButtonMaxDisabled: isButtonFalse,
+      }, () => {
+        const { sum } = this.state;
+        saveItem('sum', sum);
+      });
+    }
   }
 
   onButtonPlus = ({ target }) => {
@@ -43,8 +59,13 @@ class ShoppingCart extends Component {
       sum: { ...prev.sum, [name]: increase },
       isButtonMinDisabled: { ...prev.isButtonMinDisabled, [name]: false },
     }), () => {
-      const { sum: sumTest } = this.state;
+      const { sum: sumTest, cartItem } = this.state;
       saveItem('sum', sumTest);
+      const filterCart = cartItem.filter((item) => item.id === name);
+      const validPlus = sumTest[name] === filterCart[0].available_quantity;
+      this.setState((prev) => ({
+        isButtonMaxDisabled: { ...prev.isButtonMaxDisabled, [name]: validPlus },
+      }));
     });
   };
 
@@ -70,11 +91,15 @@ class ShoppingCart extends Component {
     const removedItems = cartItem.filter((item) => item.id !== name);
     this.setState({ cartItem: removedItems }, () => {
       saveItem('cart', removedItems);
+      const validCart = removedItems.length === 0;
+      console.log(validCart);
+      this.setState({ isCart: validCart });
     });
   };
 
   render() {
-    const { cartItem, isCart, sum, isButtonMinDisabled } = this.state;
+    const { cartItem, isCart, sum, isButtonMinDisabled,
+      isButtonMaxDisabled } = this.state;
     return (
       <div>
         {
@@ -95,6 +120,7 @@ class ShoppingCart extends Component {
                         name={ item.id }
                         value="1"
                         onClick={ this.onButtonPlus }
+                        disabled={ isButtonMaxDisabled[item.id] }
                       >
                         +
                       </button>
