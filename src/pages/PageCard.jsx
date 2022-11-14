@@ -8,6 +8,8 @@ class PageCard extends React.Component {
   state = {
     product: {},
     cartItems: [],
+    cartLength: 0,
+    shipping: false,
   };
 
   async componentDidMount() {
@@ -20,6 +22,8 @@ class PageCard extends React.Component {
     this.setState({
       product: dataJson,
       cartItems: validSaveCart,
+      cartLength: validSaveCart.length,
+      shipping: dataJson.shipping.free_shipping,
     });
   }
 
@@ -30,17 +34,22 @@ class PageCard extends React.Component {
     }), () => {
       const { cartItems } = this.state;
       saveItem('cart', cartItems);
+      this.setState({ cartLength: cartItems.length });
     });
   };
 
   render() {
-    const { product: { title, price, thumbnail, id } } = this.state;
-    console.log(id);
+    const { product: { title, price, thumbnail },
+      cartLength, shipping } = this.state;
+    console.log(shipping);
     return (
       <div className="pageCard">
         <h1 data-testid="product-detail-name">{ title }</h1>
         <h1 data-testid="product-detail-price">{ price }</h1>
         <img data-testid="product-detail-image" src={ thumbnail } alt={ title } />
+        {
+          shipping && <p data-testid="free-shipping">Frete grátis</p>
+        }
         <button
           data-testid="product-detail-add-to-cart"
           type="button"
@@ -50,7 +59,11 @@ class PageCard extends React.Component {
           Adicionar ao Carrinho
         </button>
         <Link to="/ShoppingCart" data-testid="shopping-cart-button">
-          Carrinho de compra.
+          <p
+            data-testid="shopping-cart-size"
+          >
+            { `Carrinho de compra. ${cartLength} itens` }
+          </p>
         </Link>
         <Email { ...this.props } />
       </div>
