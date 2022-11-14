@@ -20,6 +20,7 @@ class InitialPage extends Component {
     this.setState({
       categories: categoriesData,
       cartItems: validSaveCart,
+      cartLength: validSaveCart.length,
     });
   }
 
@@ -56,11 +57,13 @@ class InitialPage extends Component {
     }), () => {
       const { cartItems } = this.state;
       saveItem('cart', cartItems);
+      this.setState({ cartLength: cartItems.length });
     });
   };
 
   render() {
-    const { categories, isButtonDisable, inputText, search, isUndefined } = this.state;
+    const { categories, isButtonDisable, inputText, search, isUndefined,
+      cartLength } = this.state;
     return (
       <div>
         <div>
@@ -142,7 +145,7 @@ class InitialPage extends Component {
           data-testid="shopping-cart-button"
           to="./ShoppingCart"
         >
-          ShoppingCart
+          <p data-testid="shopping-cart-size">{ `ShoppingCart ${cartLength} items` }</p>
         </Link>
       </div>
     );
