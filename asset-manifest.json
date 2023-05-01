@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/HigoJhon/Online-Store/static/css/main.073c9b0a.css",
-    "main.js": "/HigoJhon/Online-Store/static/js/main.9a8210f4.js",
-    "index.html": "/HigoJhon/Online-Store/index.html",
-    "main.073c9b0a.css.map": "/HigoJhon/Online-Store/static/css/main.073c9b0a.css.map",
-    "main.9a8210f4.js.map": "/HigoJhon/Online-Store/static/js/main.9a8210f4.js.map"
+    "main.css": "/Online-Store/static/css/main.073c9b0a.css",
+    "main.js": "/Online-Store/static/js/main.2addf396.js",
+    "index.html": "/Online-Store/index.html",
+    "main.073c9b0a.css.map": "/Online-Store/static/css/main.073c9b0a.css.map",
+    "main.2addf396.js.map": "/Online-Store/static/js/main.2addf396.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.9a8210f4.js"
+    "static/js/main.2addf396.js"
   ]
 }
