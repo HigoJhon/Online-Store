@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/HigoJhon/Online-Store/static/css/main.073c9b0a.css",
+    "main.js": "/HigoJhon/Online-Store/static/js/main.9a8210f4.js",
+    "index.html": "/HigoJhon/Online-Store/index.html",
+    "main.073c9b0a.css.map": "/HigoJhon/Online-Store/static/css/main.073c9b0a.css.map",
+    "main.9a8210f4.js.map": "/HigoJhon/Online-Store/static/js/main.9a8210f4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.9a8210f4.js"
+  ]
+}
