@@ -16,6 +16,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -42,9 +44,23 @@
   },
   "devDependencies": {
     "eslint-config-trybe-frontend": "1.3.1",
+    "gh-pages": "^5.0.0",
     "prop-types": "^15.8.1",
     "stylelint": "^14.11.0",
     "stylelint-config-standard": "^28.0.0",
     "stylelint-order": "^5.0.0"
-  }
+  },
+  "description": "<!-- Olá, Tryber! Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HigoJhon/Online-Store.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HigoJhon/Online-Store/issues"
+  },
+  "homepage": "https://higojhon.github.io/Online-Store/"
 }

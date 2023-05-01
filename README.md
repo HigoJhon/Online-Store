@@ -1,13 +1,11 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+# :desktop_computer: Online Store :desktop_computer:
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+Neste projeto junto com o time desenvolvemos uma versao simplificada de uma loja online. Essa aplicação e capz de:
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+* Buscar produtos por termos e categorias a partir da API do Mercado Livre;
+* Adicioná-los e removê-los de um carrinho de compras em diferentes quantidades;
+* Visualizar detalhes e avaliações prévias de um produto, bem como criar novas avaliações;
+* Simular a finalização da compra dos itens selecionados.
+
+#### Caso queira ver em seu navegardor e so cliclar no link a baixo.
+#### https://higojhon.github.io/Online-Store/

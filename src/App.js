@@ -11,7 +11,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Switch>
-          <Route exact path="/" component={ InitialPage } />
+          <Route exact path="/Online-Store" component={ InitialPage } />
           <Route exact path="/ShoppingCart" component={ ShoppingCart } />
           <Route exact path="/pageCard/:id" component={ PageCard } />
           <Route exact path="/checkout" component={ Checkout } />
